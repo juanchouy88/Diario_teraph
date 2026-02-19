@@ -50,7 +50,12 @@ st.title("🧘 Mi Diario Terapéutico")
 st.info("Espacio seguro para registrar tus pensamientos. El análisis se enviará automáticamente a tu terapeuta.")
 
 nombre_paciente = st.text_input("Identificador / Nombre")
-registro_dia = st.text_area("¿Cómo te sentís hoy?", height=250)
+registro_dia = st.text_area(
+    "¿Cómo te sentís hoy?", 
+    height=250, 
+    max_chars=3000, 
+    help="El límite es de 3.000 caracteres para mantener el foco en las ideas principales."
+)
 
 if st.button("Enviar Registro"):
     if not nombre_paciente or not registro_dia:
