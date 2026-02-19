@@ -8,8 +8,13 @@ from datetime import datetime
 try:
     GCP_CREDS = dict(st.secrets["gcp_service_account"])
     
-    # ESTA ES LA LÍNEA MÁGICA QUE ARREGLA EL ERROR BASE64:
-    GCP_CREDS["private_key"] = GCP_CREDS["private_key"].replace('\\n', '\n')
+    # LIMPIEZA EXTREMA DE LA LLAVE (Mata los caracteres fantasma de Windows)
+    llave = GCP_CREDS["private_key"]
+    llave = llave.replace('\\n', '\n')  # Convierte saltos literales
+    llave = llave.replace('\r', '')     # Elimina retornos de carro invisibles
+    llave = llave.replace('\\r', '')    # Por las dudas
+    
+    GCP_CREDS["private_key"] = llave
     
     GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
 except Exception:
