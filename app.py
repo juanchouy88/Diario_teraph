@@ -5,7 +5,6 @@ import google.generativeai as genai
 from datetime import datetime
 
 # --- CONFIGURACIÓN DE SEGURIDAD (Secrets) ---
-# Extraemos los datos de los Secrets de Streamlit para proteger tu proyecto
 try:
     GCP_CREDS = dict(st.secrets["gcp_service_account"])
     GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
@@ -19,27 +18,12 @@ def conectar_google_sheet():
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
     creds = ServiceAccountCredentials.from_json_keyfile_dict(GCP_CREDS, scope)
     client = gspread.authorize(creds)
-    # Usamos el nombre exacto de tu planilla
     return client.open("Crear Diario Terapéutico con Glide").get_worksheet(0)
 
 def analizar_con_ia(texto_paciente):
     genai.configure(api_key=GEMINI_API_KEY)
     
-    # CAMBIO CLAVE: Usamos el modelo activo en 2026
-    model = genai.GenerativeModel('gemini-2.5-flash') 
-    
-    prompt = f"""
-    Actúa como un asistente analítico especializado en psicoanálisis. 
-    Analiza el siguiente registro e identifica mecanismos de defensa o repeticiones significativas.
-    
-    REGISTRO:
-    {texto_paciente}
-    """
-    response = model.generate_content(prompt)
-    return response.textdef analizar_con_ia(texto_paciente):
-    genai.configure(api_key=GEMINI_API_KEY)
-    
-    # CAMBIO CLAVE: Usamos el modelo activo en 2026
+    # Usamos el modelo activo y correcto para 2026
     model = genai.GenerativeModel('gemini-2.5-flash') 
     
     prompt = f"""
@@ -58,7 +42,6 @@ st.set_page_config(page_title="Diario Terapéutico", page_icon="🧘")
 st.title("🧘 Mi Diario Terapéutico")
 st.info("Espacio seguro para registrar tus pensamientos. El análisis se enviará automáticamente a tu terapeuta.")
 
-# Campos de entrada (Reemplazan la interfaz de Glide)
 nombre_paciente = st.text_input("Identificador / Nombre")
 registro_dia = st.text_area("¿Cómo te sentís hoy?", height=250)
 
@@ -75,14 +58,11 @@ if st.button("Enviar Registro"):
                 sheet = conectar_google_sheet()
                 fecha_actual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 
-                # Mantenemos tu estructura de columnas: 
-                # Fecha, Paciente, Registro del día, Estado de Ánimo (vacio), Temas Detectados (vacio), Resumen Emocional
                 nueva_fila = [fecha_actual, nombre_paciente, registro_dia, "", "", analisis_ia]
                 sheet.append_row(nueva_fila)
                 
                 st.success("¡Registro guardado con éxito!")
                 
-                # Mostrar el análisis al paciente de forma elegante
                 with st.expander("Ver análisis de hoy"):
                     st.write(analisis_ia)
                     
