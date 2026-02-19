@@ -1,5 +1,4 @@
+streamlit
 gspread
 oauth2client
 google-generativeai
-schedule
-python-dotenv
