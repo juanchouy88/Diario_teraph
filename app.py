@@ -23,11 +23,13 @@ def conectar_google_sheet():
     return client.open("Crear Diario Terapéutico con Glide").get_worksheet(0)
 
 def analizar_con_ia(texto_paciente):
-    """Envía el texto a Gemini para obtener el análisis psicoanalítico."""
     genai.configure(api_key=GEMINI_API_KEY)
     
-    # CAMBIO AQUÍ: Usamos gemini-1.5-flash en lugar de gemini-pro
+    # Probamos con la versión estable más reciente
     model = genai.GenerativeModel('gemini-1.5-flash') 
+    
+    # Si después de actualizar requirements sigue el 404, 
+    # podés intentar con 'gemini-1.5-flash-latest'
     
     prompt = f"""
     Actúa como un asistente analítico especializado en psicoanálisis. 
