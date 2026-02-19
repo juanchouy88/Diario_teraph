@@ -69,9 +69,7 @@ if st.button("Enviar Registro"):
                 sheet.append_row(nueva_fila)
                 
                 st.success("¡Registro guardado con éxito!")
-                
-                with st.expander("Ver análisis de hoy"):
-                    st.write(analisis_ia)
+                st.info("Tu terapeuta ha recibido tu registro de forma segura. ¡Gracias por tomarte este tiempo para vos hoy!")
                     
             except Exception as e:
                 st.error(f"Error al procesar el registro: {e}")
