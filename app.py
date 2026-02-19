@@ -25,9 +25,10 @@ def conectar_google_sheet():
 def analizar_con_ia(texto_paciente):
     """Envía el texto a Gemini para obtener el análisis psicoanalítico."""
     genai.configure(api_key=GEMINI_API_KEY)
-    model = genai.GenerativeModel('gemini-pro')
     
-    # Prompt optimizado para tu pareja psicóloga
+    # CAMBIO AQUÍ: Usamos gemini-1.5-flash en lugar de gemini-pro
+    model = genai.GenerativeModel('gemini-1.5-flash') 
+    
     prompt = f"""
     Actúa como un asistente analítico especializado en psicoanálisis. 
     Analiza el siguiente registro e identifica mecanismos de defensa o repeticiones significativas.
