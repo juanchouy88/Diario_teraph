@@ -25,11 +25,22 @@ def conectar_google_sheet():
 def analizar_con_ia(texto_paciente):
     genai.configure(api_key=GEMINI_API_KEY)
     
-    # Probamos con la versión estable más reciente
-    model = genai.GenerativeModel('gemini-1.5-flash') 
+    # CAMBIO CLAVE: Usamos el modelo activo en 2026
+    model = genai.GenerativeModel('gemini-2.5-flash') 
     
-    # Si después de actualizar requirements sigue el 404, 
-    # podés intentar con 'gemini-1.5-flash-latest'
+    prompt = f"""
+    Actúa como un asistente analítico especializado en psicoanálisis. 
+    Analiza el siguiente registro e identifica mecanismos de defensa o repeticiones significativas.
+    
+    REGISTRO:
+    {texto_paciente}
+    """
+    response = model.generate_content(prompt)
+    return response.textdef analizar_con_ia(texto_paciente):
+    genai.configure(api_key=GEMINI_API_KEY)
+    
+    # CAMBIO CLAVE: Usamos el modelo activo en 2026
+    model = genai.GenerativeModel('gemini-2.5-flash') 
     
     prompt = f"""
     Actúa como un asistente analítico especializado en psicoanálisis. 
