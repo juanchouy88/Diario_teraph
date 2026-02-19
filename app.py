@@ -7,6 +7,10 @@ from datetime import datetime
 # --- CONFIGURACIÓN DE SEGURIDAD (Secrets) ---
 try:
     GCP_CREDS = dict(st.secrets["gcp_service_account"])
+    
+    # ESTA ES LA LÍNEA MÁGICA QUE ARREGLA EL ERROR BASE64:
+    GCP_CREDS["private_key"] = GCP_CREDS["private_key"].replace('\\n', '\n')
+    
     GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
 except Exception:
     st.error("Error: Los Secretos de configuración no están definidos en Streamlit Cloud.")
