@@ -3,23 +3,21 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import google.generativeai as genai
 from datetime import datetime
+import json # <-- ¡Nueva importación!
 
 # --- CONFIGURACIÓN DE SEGURIDAD (Secrets) ---
 try:
-    GCP_CREDS = dict(st.secrets["gcp_service_account"])
-    
-    # LIMPIEZA EXTREMA DE LA LLAVE (Mata los caracteres fantasma de Windows)
-    llave = GCP_CREDS["private_key"]
-    llave = llave.replace('\\n', '\n')  # Convierte saltos literales
-    llave = llave.replace('\r', '')     # Elimina retornos de carro invisibles
-    llave = llave.replace('\\r', '')    # Por las dudas
-    
-    GCP_CREDS["private_key"] = llave
+    # Ahora leemos el JSON crudo y lo convertimos a diccionario nativo
+    gcp_json_crudo = st.secrets["GCP_JSON"]
+    GCP_CREDS = json.loads(gcp_json_crudo)
     
     GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
-except Exception:
-    st.error("Error: Los Secretos de configuración no están definidos en Streamlit Cloud.")
+except Exception as e:
+    st.error(f"Error al cargar las credenciales: {e}")
     st.stop()
+
+# --- FUNCIONES DE SERVICIO ---
+# (El resto del código hacia abajo queda igual, no toques más nada)
 
 # --- FUNCIONES DE SERVICIO ---
 def conectar_google_sheet():
