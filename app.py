@@ -15,7 +15,7 @@ if "logged_in" not in st.session_state:
 
 if not st.session_state.logged_in:
     st.title("🔒 Acceso Seguro al Diario Terapéutico")
-    st.info("Por favor, ingresa tu contraseña para acceder a la aplicación.")
+    st.info("Por favor, ingresá tu contraseña para acceder a la aplicación.")
     password = st.text_input("Contraseña clave", type="password")
     if st.button("Ingresar", type="primary"):
         if password == st.secrets["APP_PASSWORD"]:
@@ -166,9 +166,8 @@ if st.button("Enviar Registro", type="primary"):
                 sheet = conectar_google_sheet()
                 fecha_actual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 
-                # Formato mantenido de columnas: [Fecha, Nombre, Registro, vacío, vacío, Análisis]
-                # para resguardar la compatibilidad con el formato "Crear Diario Terapéutico con Glide"
-                nueva_fila = [fecha_actual, nombre_paciente, registro_dia, "", "", analisis_ia]
+                # Nuevo formato de columnas según la actualización del Sheet: [Fecha, Paciente, Registro del día, Resumen Emocional]
+                nueva_fila = [fecha_actual, nombre_paciente, registro_dia, analisis_ia]
                 sheet.append_row(nueva_fila)
                 
                 # 3. REGLA DE ORO: Solo mostrar mensaje de éxito (Sin revelar el análisis al paciente)
